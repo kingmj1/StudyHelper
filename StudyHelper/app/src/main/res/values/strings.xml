@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">StudyHelper</string>
+    <string name="action_settings">Settings</string>
+    <string name="test_text">test</string>
+    <plurals name="task_count_text">
+        <item quantity="one">%d current task</item>
+        <item quantity="other">%d current tasks</item>
+    </plurals>
+</resources>

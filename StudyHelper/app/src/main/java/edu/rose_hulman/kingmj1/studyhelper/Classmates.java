@@ -17,6 +17,8 @@ public class Classmates {
         return classmateEmail;
     }
 
-
+    public String getName() {
+        return classmateName;
+    }
 
 }

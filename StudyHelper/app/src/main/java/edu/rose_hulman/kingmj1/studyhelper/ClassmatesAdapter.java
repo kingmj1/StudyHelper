@@ -46,7 +46,7 @@ public class ClassmatesAdapter extends RecyclerView.Adapter<ClassmatesAdapter.Cl
 
         public ClassmatesViewHolder(View itemView) {
             super(itemView);
-            classmateNameView = (TextView) itemView.findViewById(R.id.classmate_name_view);
+            classmateNameView = (TextView) itemView.findViewById(R.id.classmate_name_text);
             itemView.setOnClickListener(this);
         }
 

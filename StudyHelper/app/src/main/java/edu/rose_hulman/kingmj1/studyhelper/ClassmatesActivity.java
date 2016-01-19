@@ -35,7 +35,7 @@ public class ClassmatesActivity extends AppCompatActivity {
             }
         });
 
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.classmate_recycler_view);
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.classmates_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         mClassmatesAdapter = new ClassmatesAdapter(this, recyclerView);
@@ -45,7 +45,8 @@ public class ClassmatesActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_classmates, menu);
+        //TODO: Not sure if we need a menu yet
+        //getMenuInflater().inflate(R.menu.menu_classmates, menu);
         return true;
     }
 

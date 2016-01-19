@@ -6,4 +6,5 @@
         <item quantity="one">%d current task</item>
         <item quantity="other">%d current tasks</item>
     </plurals>
+    <string name="title_activity_task">TaskActivity</string>
 </resources>

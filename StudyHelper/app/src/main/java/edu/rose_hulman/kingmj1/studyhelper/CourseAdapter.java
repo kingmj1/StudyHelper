@@ -1,6 +1,7 @@
 package edu.rose_hulman.kingmj1.studyhelper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     private ArrayList<Course> mCourses = new ArrayList<>();
     private RecyclerView mRecyclerView;
 
-
     public CourseAdapter(Context context, RecyclerView recyclerView) {
         mContext = context;
         mRecyclerView = recyclerView;
@@ -35,7 +35,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     public void onBindViewHolder(CourseViewHolder holder, int position) {
         Course course = mCourses.get(position);
         holder.courseNameView.setText(course.getName());
-        int courseCount = course.getTaskAdapter().getTaskCount();
+        int courseCount = course.getTaskAdapter().getItemCount();
         holder.courseCountView.setText(mContext.getResources().getQuantityString(R.plurals.task_count_text, courseCount, courseCount));
     }
 
@@ -58,7 +58,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
         @Override
         public void onClick(View v) {
-            //TODO: Launch Task RecyclerView
+            Intent tasksIntent = new Intent(mContext, TaskActivity.class);
+            mContext.startActivity(tasksIntent);
         }
     }
 
@@ -66,4 +67,5 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         mCourses.add(new Course("MA223- Engineering Statistics"));
         mCourses.add(new Course("ES205- ADES"));
     }
+
 }

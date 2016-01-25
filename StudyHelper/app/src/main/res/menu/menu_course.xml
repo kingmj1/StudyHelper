@@ -2,6 +2,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="edu.rose_hulman.kingmj1.studyhelper.CourseActivity">
+
+    <item
+        android:id="@+id/action_classmates"
+        android:title="Classmates"
+        app:showAsAction="if room"
+        />
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

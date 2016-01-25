@@ -6,7 +6,8 @@
     <item
         android:id="@+id/action_classmates"
         android:title="Classmates"
-        app:showAsAction="if room"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/classmates"
         />
 
     <item

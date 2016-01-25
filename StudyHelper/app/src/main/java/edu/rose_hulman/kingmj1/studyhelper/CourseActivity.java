@@ -1,5 +1,6 @@
 package edu.rose_hulman.kingmj1.studyhelper;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -56,6 +57,11 @@ public class CourseActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+
+        if (id == R.id.action_classmates) {
+            Intent classmatesIntent = new Intent(this, ClassmatesActivity.class);
+            this.startActivity(classmatesIntent);
         }
 
         return super.onOptionsItemSelected(item);

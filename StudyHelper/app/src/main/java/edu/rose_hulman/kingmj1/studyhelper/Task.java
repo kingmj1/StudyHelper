@@ -1,11 +1,40 @@
 package edu.rose_hulman.kingmj1.studyhelper;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Date;
 
 /**
  * Created by kingmj1 on 1/17/2016.
  */
-public class Task {
+public class Task implements Parcelable {
+
+    protected Task(Parcel in) {
+        name = in.readString();
+    }
+
+    public static final Creator<Task> CREATOR = new Creator<Task>() {
+        @Override
+        public Task createFromParcel(Parcel in) {
+            return new Task(in);
+        }
+
+        @Override
+        public Task[] newArray(int size) {
+            return new Task[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+    }
 
     public enum TaskType {
         HOMEWORK,

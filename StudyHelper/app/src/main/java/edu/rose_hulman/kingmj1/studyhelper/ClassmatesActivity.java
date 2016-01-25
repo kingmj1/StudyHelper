@@ -22,8 +22,8 @@ public class ClassmatesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_classmates);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -34,12 +34,11 @@ public class ClassmatesActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.classmates_recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setHasFixedSize(true);
-        mClassmatesAdapter = new ClassmatesAdapter(this, recyclerView);
-        recyclerView.setAdapter(mClassmatesAdapter);
+//        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.classmates_recycler_view);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.setHasFixedSize(true);
+//        mClassmatesAdapter = new ClassmatesAdapter(this, recyclerView);
+//        recyclerView.setAdapter(mClassmatesAdapter);
     }
 
     @Override

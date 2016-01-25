@@ -21,9 +21,10 @@
         <activity
             android:name=".TaskActivity"
             android:label="@string/title_activity_task"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity
-            android:name=".WorkManagerActivity"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".WorkManagerActivity" />
+        <activity android:name=".TaskDetailActivity"></activity>
+        <activity android:name=".ClassmatesActivity"></activity>
     </application>
 
 </manifest>

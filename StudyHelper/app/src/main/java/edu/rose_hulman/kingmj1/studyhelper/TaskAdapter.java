@@ -1,6 +1,7 @@
 package edu.rose_hulman.kingmj1.studyhelper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     private Context mContext;
     private RecyclerView mRecyclerView;
 
+    private static final String TASK_EXTRA_KEY = "TASK";
+
     public TaskAdapter() {
         //blank constructor
     }
@@ -36,10 +39,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     }
 
     @Override
-    public void onBindViewHolder(TaskAdapter.TaskViewHolder holder, int position) {
+    public void onBindViewHolder(TaskAdapter.TaskViewHolder holder, final int position) {
         Task task = mTasks.get(position);
         holder.taskNameView.setText(task.getName());
         holder.taskTypeView.setText(task.getTypeString());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent taskDetailIntent = new Intent(mContext, TaskDetailActivity.class);
+                taskDetailIntent.putExtra(TASK_EXTRA_KEY, mTasks.get(position));
+                mContext.startActivity(taskDetailIntent);
+            }
+        });
     }
 
     @Override
@@ -47,7 +58,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         return mTasks.size();
     }
 
-    class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class TaskViewHolder extends RecyclerView.ViewHolder {
 
         private TextView taskNameView;
         private TextView taskTypeView;
@@ -56,12 +67,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             super(itemView);
             taskNameView = (TextView)itemView.findViewById(R.id.task_name_view);
             taskTypeView = (TextView)itemView.findViewById(R.id.task_type_text);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            //TODO: Launch TaskDetailFragment
         }
     }
 
@@ -69,4 +74,5 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         mTasks.add(new Task("Homework 4", new Date(), Task.TaskType.HOMEWORK));
         mTasks.add(new Task("Exam 3", new Date(), Task.TaskType.EXAM));
     }
+
 }

@@ -1,11 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="edu.rose_hulman.kingmj1.studyhelper.CourseActivity">
+    tools:context="edu.rose_hulman.kingmj1.studyhelper.TaskActivity">
 
     <item
-        android:id="@+id/action_work"
-        android:title="@string/action_work"
+        android:id="@+id/action_classmates"
+        android:title="@string/action_classmates"
         app:showAsAction="ifRoom"
         />
 

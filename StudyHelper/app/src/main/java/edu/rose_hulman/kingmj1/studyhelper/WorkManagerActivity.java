@@ -14,10 +14,10 @@ public class WorkManagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_work_manager);
 
-        //RecyclerView recyclerView = (RecyclerView)findViewById(R.id.work_task_recycler_view);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //recyclerView.setHasFixedSize(true);
-        //mTaskAdapter = new TaskAdapter(this, recyclerView);
-        //recyclerView.setAdapter(mTaskAdapter);
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.work_task_recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+        mTaskAdapter = new TaskAdapter(this, recyclerView);
+        recyclerView.setAdapter(mTaskAdapter);
     }
 }

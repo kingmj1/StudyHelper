@@ -9,6 +9,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="edu.rose_hulman.kingmj1.studyhelper.WorkManagerActivity">
 
-    <include layout="@layout/content_course" />
+    <include layout="@layout/content_work_manager" />
 
 </RelativeLayout>

@@ -20,7 +20,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     private Context mContext;
     private RecyclerView mRecyclerView;
 
-    private static final String TASK_EXTRA_KEY = "TASK";
+    public static final String TASK_EXTRA_KEY = "TASK";
 
     public TaskAdapter() {
         //blank constructor

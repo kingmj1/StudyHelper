@@ -3,6 +3,7 @@ package edu.rose_hulman.kingmj1.studyhelper;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.DateFormat;
 import java.util.Date;
 
 /**
@@ -12,6 +13,8 @@ public class Task implements Parcelable {
 
     protected Task(Parcel in) {
         name = in.readString();
+        dueDate = new Date(in.readLong());
+        type = (TaskType)in.readSerializable();
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
@@ -34,6 +37,8 @@ public class Task implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
+        dest.writeLong(dueDate.getTime());
+        dest.writeSerializable(type);
     }
 
     public enum TaskType {
@@ -56,6 +61,9 @@ public class Task implements Parcelable {
     public String getName() { return name;}
 
     public String getTypeString() {
+        if(type == null) {
+            return "null type?";
+        }
         switch (type) {
             case EXAM:
                 return "Exam";
@@ -66,5 +74,9 @@ public class Task implements Parcelable {
             default:
                 return "Unknown Type";
         }
+    }
+
+    public String getDateString() {
+        return DateFormat.getDateInstance().format(dueDate);
     }
 }

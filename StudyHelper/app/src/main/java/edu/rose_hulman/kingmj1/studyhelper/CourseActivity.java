@@ -1,19 +1,25 @@
 package edu.rose_hulman.kingmj1.studyhelper;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
-public class CourseActivity extends AppCompatActivity {
+public class CourseActivity extends AppCompatActivity implements CourseAdapter.CourseCallback {
 
     private CourseAdapter mCourseAdapter;
 
@@ -28,15 +34,14 @@ public class CourseActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                showAddEditDialog(null);
             }
         });
 
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.course_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        mCourseAdapter = new CourseAdapter(this, recyclerView);
+        mCourseAdapter = new CourseAdapter(this, this, recyclerView);
         recyclerView.setAdapter(mCourseAdapter);
     }
 
@@ -65,5 +70,70 @@ public class CourseActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showAddEditDialog(final Course course) {
+        DialogFragment df = new DialogFragment() {
+            @Override
+            public Dialog onCreateDialog(Bundle savedInstanceState) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle(getString(course == null ? R.string.dialog_add_course_title : R.string.dialog_edit_course_title));
+                View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_add_course, null, false);
+                builder.setView(view);
+                final EditText nameEditText = (EditText) view.findViewById(R.id.course_name_edit_text);
+                if (course != null) {
+                    // pre-populate
+                    nameEditText.setText(course.getName());
+
+                    TextWatcher textWatcher = new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                            // empty
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                            // empty
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            String name = nameEditText.getText().toString();
+                            mCourseAdapter.update(course, name);
+                        }
+                    };
+
+                    nameEditText.addTextChangedListener(textWatcher);
+                }
+
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (course == null) {
+                            String name = nameEditText.getText().toString();
+                            mCourseAdapter.add(new Course(name));
+                        }
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, null);
+
+                if (course != null) {
+                    builder.setNeutralButton(R.string.delete_title, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mCourseAdapter.remove(course);
+                        }
+                    });
+                }
+
+                return builder.create();
+            }
+        };
+        df.show(getSupportFragmentManager(), "add");
+    }
+
+    @Override
+    public void onCourseEdit(Course course) {
+        showAddEditDialog(course);
     }
 }

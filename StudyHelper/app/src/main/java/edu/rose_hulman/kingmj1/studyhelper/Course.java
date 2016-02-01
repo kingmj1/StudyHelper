@@ -5,17 +5,27 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v7.widget.RecyclerView;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 /**
  * Created by kingmj1 on 1/17/2016.
  */
 public class Course implements Parcelable {
 
+    @JsonIgnore
+    private String key;
+
     private String name;
-    private TaskAdapter mTaskAdapter;
+    //private TaskAdapter mTaskAdapter;
+
+    public Course() {
+        //required empty constructor for Firebase
+    }
 
     public Course(String newName) {
         name = newName;
-        mTaskAdapter = new TaskAdapter();
+        //mTaskAdapter = new TaskAdapter();
     }
 
     protected Course(Parcel in) {
@@ -43,14 +53,25 @@ public class Course implements Parcelable {
     }
 
 
-    public TaskAdapter getTaskAdapter() {
-        return mTaskAdapter;
+//    public TaskAdapter getTaskAdapter() {
+//        return mTaskAdapter;
+//    }
+//
+//    public void setTaskAdapter(TaskAdapter mTaskAdapter) {
+//        this.mTaskAdapter = mTaskAdapter;
+//    }
+
+    public String getKey() {
+        return key;
     }
 
-    public void setTaskAdapter(TaskAdapter mTaskAdapter) {
-        this.mTaskAdapter = mTaskAdapter;
+    public void setKey(String key) {
+        this.key = key;
     }
 
+    public void setValues(Course inCourse) {
+        name = inCourse.getName();
+    }
 
     @Override
     public int describeContents() {

@@ -3,6 +3,8 @@ package edu.rose_hulman.kingmj1.studyhelper;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -15,6 +17,7 @@ public class Task implements Parcelable {
         name = in.readString();
         dueDate = new Date(in.readLong());
         type = (TaskType)in.readSerializable();
+        progress = in.readInt();
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
@@ -39,6 +42,7 @@ public class Task implements Parcelable {
         dest.writeString(name);
         dest.writeLong(dueDate.getTime());
         dest.writeSerializable(type);
+        dest.writeInt(progress);
     }
 
     public enum TaskType {
@@ -47,24 +51,38 @@ public class Task implements Parcelable {
         MEETING;
     }
 
+    @JsonIgnore
+    private String key;
+
 
     private String name;
+    private String courseKey;
+
+    @JsonIgnore
     private TaskType type;
+
+    private int typeInt;
+
+    @JsonIgnore
     private Date dueDate;
+
+    private long dateLong;
     private int progress;
+
+    public Task() {
+        //empty constructor for firebase
+    }
 
     public Task(String newName, Date newDate, TaskType newType, int newProgress) {
         name = newName;
         dueDate = newDate;
+        dateLong = dueDate.getTime();
         type = newType;
+        typeInt = type.ordinal();
         progress = newProgress;
     }
 
     public String getName() { return name;}
-
-    public void setName(String newName) {
-        name = newName;
-    }
 
     public String getTypeString() {
         if(type == null) {
@@ -82,16 +100,70 @@ public class Task implements Parcelable {
         }
     }
 
-    public void setType(TaskType newType) {
-        type = newType;
-    }
-
     public String getDateString() {
         return DateFormat.getDateInstance().format(dueDate);
     }
 
-    public void setDueDate(Date newDate) {
-        dueDate = newDate;
+    public void setValues(Task task) {
+        name = task.getName();
+        courseKey = task.getCourseKey();
+        dateLong = task.getDateLong();
+        dueDate = new Date(dateLong);
+        typeInt = task.getTypeInt();
+        type = TaskType.values()[typeInt];
+        progress = task.getProgress();
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCourseKey() {
+        return courseKey;
+    }
+
+    public void setCourseKey(String courseKey) {
+        this.courseKey = courseKey;
+    }
+
+    public TaskType getType() {
+        return type;
+    }
+
+    public void setType(TaskType type) {
+        this.type = type;
+    }
+
+    public int getTypeInt() {
+        return typeInt;
+    }
+
+    public void setTypeInt(int typeInt) {
+        this.typeInt = typeInt;
+    }
+
+    public Date getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public long getDateLong() {
+        return dateLong;
+    }
+
+    public void setDateLong(long dateLong) {
+        this.dateLong = dateLong;
     }
 
     public int getProgress() {
@@ -101,4 +173,5 @@ public class Task implements Parcelable {
     public void setProgress(int newProgress) {
         progress = newProgress;
     }
+
 }

@@ -125,6 +125,8 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.TaskC
                         }
                     };
                     taskEditText.addTextChangedListener(textWatcher);
+
+//                    switch(task.getType())
                 }
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override

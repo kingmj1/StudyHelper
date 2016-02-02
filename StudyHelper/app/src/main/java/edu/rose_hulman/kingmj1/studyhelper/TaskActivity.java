@@ -141,7 +141,7 @@ public class TaskActivity extends AppCompatActivity {
                             int month = taskDatePicker.getMonth();
                             int day = taskDatePicker.getDayOfMonth();
                             int year = taskDatePicker.getYear();
-                            Date date = new Date(month, day, year);
+                            Date date = new Date(year - 1900, month, day);
                             Task.TaskType taskType = getTaskType(taskTypeExam.isChecked(), taskTypeHomework.isChecked(), taskTypeMeeting.isChecked());
                             int progress = taskProgressBar.getProgress();
                             Log.d("StudyHelperError", "name: " + name + 

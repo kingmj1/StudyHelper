@@ -1,8 +1,10 @@
 package edu.rose_hulman.kingmj1.studyhelper;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +21,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     private ArrayList<Task> mTasks = new ArrayList<>();
     private Context mContext;
     private RecyclerView mRecyclerView;
+    private TaskCallback mTaskCallback;
 
     public static final String TASK_EXTRA_KEY = "TASK";
 
@@ -26,10 +29,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         //blank constructor
     }
 
-    public TaskAdapter(Context context, RecyclerView recyclerView) {
+    public TaskAdapter(Context context, RecyclerView recyclerView, TaskCallback taskCallback) {
         mContext = context;
         mRecyclerView = recyclerView;
         createTestTasks();
+        mTaskCallback = taskCallback;
     }
 
     @Override
@@ -49,6 +53,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
                 Intent taskDetailIntent = new Intent(mContext, TaskDetailActivity.class);
                 taskDetailIntent.putExtra(TASK_EXTRA_KEY, mTasks.get(position));
                 mContext.startActivity(taskDetailIntent);
+            }
+        });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Log.d("StudyHelperError", "TaskAdapter: current position: " + position);
+                mTaskCallback.onEdit(mTasks.get(position));
+                return true;
             }
         });
     }
@@ -81,8 +93,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         notifyDataSetChanged();
     }
 
-    public void update(Task task, String newName) {
+    public void update(Task task, String newName, Date newDate, Task.TaskType newType, int newProgress) {
+        task.setName(newName);
+        task.setDueDate(newDate);
+        task.setType(newType);
+        task.setProgress(newProgress);
+        notifyDataSetChanged();
+    }
 
+    public interface TaskCallback {
+        public void onEdit(Task task);
     }
 
 }

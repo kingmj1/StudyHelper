@@ -28,7 +28,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class TaskActivity extends AppCompatActivity {
+public class TaskActivity extends AppCompatActivity implements TaskAdapter.TaskCallback {
 
     private TaskAdapter mTaskAdapter;
 
@@ -52,7 +52,7 @@ public class TaskActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.task_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        mTaskAdapter = new TaskAdapter(this, recyclerView);
+        mTaskAdapter = new TaskAdapter(this, recyclerView, this);
         recyclerView.setAdapter(mTaskAdapter);
     }
 
@@ -121,7 +121,7 @@ public class TaskActivity extends AppCompatActivity {
                         @Override
                         public void afterTextChanged(Editable s) {
                             String taskName = taskEditText.getText().toString();
-                            mTaskAdapter.update(task, taskName);
+                            //mTaskAdapter.update(task, taskName);
                         }
                     };
                     taskEditText.addTextChangedListener(textWatcher);
@@ -131,21 +131,27 @@ public class TaskActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         if(task != null) {
                             String name = taskEditText.getText().toString();
-                            mTaskAdapter.update(task, name);
-                        } else {
-                            String name = taskEditText.getText().toString();
                             if(name == null) {
                                 name = "Default";
                             }
-                            //long longdate = taskDatePicker.getCalendarView().getDate();
                             int month = taskDatePicker.getMonth();
                             int day = taskDatePicker.getDayOfMonth();
                             int year = taskDatePicker.getYear();
                             Date date = new Date(year - 1900, month, day);
                             Task.TaskType taskType = getTaskType(taskTypeExam.isChecked(), taskTypeHomework.isChecked(), taskTypeMeeting.isChecked());
                             int progress = taskProgressBar.getProgress();
-                            Log.d("StudyHelperError", "name: " + name + 
-                                " taskType: " + taskType.toString() + " progress: " + Integer.toString(progress));
+                            mTaskAdapter.update(task, name, date, taskType, progress);
+                        } else {
+                            String name = taskEditText.getText().toString();
+                            if(name == null) {
+                                name = "Default";
+                            }
+                            int month = taskDatePicker.getMonth();
+                            int day = taskDatePicker.getDayOfMonth();
+                            int year = taskDatePicker.getYear();
+                            Date date = new Date(year - 1900, month, day);
+                            Task.TaskType taskType = getTaskType(taskTypeExam.isChecked(), taskTypeHomework.isChecked(), taskTypeMeeting.isChecked());
+                            int progress = taskProgressBar.getProgress();
                             mTaskAdapter.createTask(name, date, taskType, progress);
                         }
                     }
@@ -172,5 +178,9 @@ public class TaskActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onEdit(final Task task) {
+        showAddEditTaskDialog(task);
+    }
 
 }

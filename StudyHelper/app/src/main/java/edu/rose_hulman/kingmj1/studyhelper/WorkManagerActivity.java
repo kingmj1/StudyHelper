@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-public class WorkManagerActivity extends AppCompatActivity {
+public class WorkManagerActivity extends AppCompatActivity implements TaskAdapter.TaskCallback {
 
     private TaskAdapter mTaskAdapter;
 
@@ -17,7 +17,12 @@ public class WorkManagerActivity extends AppCompatActivity {
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.work_task_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        mTaskAdapter = new TaskAdapter(this, recyclerView);
+        mTaskAdapter = new TaskAdapter(this, recyclerView, this);
         recyclerView.setAdapter(mTaskAdapter);
+    }
+
+    @Override
+    public void onEdit(Task task) {
+
     }
 }

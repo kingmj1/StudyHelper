@@ -62,6 +62,10 @@ public class Task implements Parcelable {
 
     public String getName() { return name;}
 
+    public void setName(String newName) {
+        name = newName;
+    }
+
     public String getTypeString() {
         if(type == null) {
             return "null type?";
@@ -78,7 +82,23 @@ public class Task implements Parcelable {
         }
     }
 
+    public void setType(TaskType newType) {
+        type = newType;
+    }
+
     public String getDateString() {
         return DateFormat.getDateInstance().format(dueDate);
+    }
+
+    public void setDueDate(Date newDate) {
+        dueDate = newDate;
+    }
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int newProgress) {
+        progress = newProgress;
     }
 }

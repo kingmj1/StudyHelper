@@ -5,9 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,7 +13,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,13 +22,13 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 public class TaskActivity extends AppCompatActivity implements TaskAdapter.TaskCallback {
 
     private TaskAdapter mTaskAdapter;
+    private String mCourseKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +36,9 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.TaskC
         setContentView(R.layout.activity_task);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Intent intent = getIntent();
+        mCourseKey = intent.getStringExtra(CourseAdapter.COURSE_KEY_EXTRA_KEY);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +53,7 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.TaskC
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.task_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        mTaskAdapter = new TaskAdapter(this, recyclerView, this);
+        mTaskAdapter = new TaskAdapter(this, recyclerView, this, mCourseKey);
         recyclerView.setAdapter(mTaskAdapter);
     }
 
@@ -127,7 +127,7 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.TaskC
                     };
                     taskEditText.addTextChangedListener(textWatcher);
 
-                    switch(task.getTypeString()) {
+                    switch(task.formatTypeString()) {
                         case("Exam"):
                             taskTypeExam.setChecked(true);
                             break;
@@ -180,7 +180,9 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.TaskC
                             Date date = new Date(year - 1900, month, day);
                             Task.TaskType taskType = getTaskType(taskTypeExam.isChecked(), taskTypeHomework.isChecked(), taskTypeMeeting.isChecked());
                             int progress = taskProgressBar.getProgress();
-                            mTaskAdapter.createTask(name, date, taskType, progress);
+                            Task newTask = new Task(name, date, taskType, progress);
+                            newTask.setCourseKey(mCourseKey);
+                            mTaskAdapter.add(newTask);
                         }
                     }
                 });

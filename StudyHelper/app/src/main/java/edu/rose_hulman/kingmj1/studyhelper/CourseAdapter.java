@@ -21,6 +21,8 @@ import java.util.ArrayList;
  */
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
 
+    public static final String COURSE_KEY_EXTRA_KEY = "course_key";
+
     private static final String FIREBASE_REPO = "study-helper-rose";
     private static final String FIREBASE_URL = "https://" + FIREBASE_REPO + ".firebaseio.com";
     private static final String COURSES_PATH = FIREBASE_URL + "/courses";
@@ -55,6 +57,14 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         //int courseCount = course.getTaskAdapter().getItemCount();
         int courseCount = 0;
         holder.courseCountView.setText(mContext.getResources().getQuantityString(R.plurals.task_count_text, courseCount, courseCount));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent tasksIntent = new Intent(mContext, TaskActivity.class);
+                tasksIntent.putExtra(COURSE_KEY_EXTRA_KEY, course.getKey());
+                mContext.startActivity(tasksIntent);
+            }
+        });
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -69,7 +79,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         return mCourses.size();
     }
 
-    class CourseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class CourseViewHolder extends RecyclerView.ViewHolder {
 
         private TextView courseNameView;
         private TextView courseCountView;
@@ -78,13 +88,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             super(itemView);
             courseNameView = (TextView)itemView.findViewById(R.id.course_name_text);
             courseCountView = (TextView)itemView.findViewById(R.id.course_count_text);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            Intent tasksIntent = new Intent(mContext, TaskActivity.class);
-            mContext.startActivity(tasksIntent);
         }
     }
 

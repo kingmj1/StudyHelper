@@ -19,8 +19,8 @@ public class TaskDetailActivity extends AppCompatActivity {
         TextView titleText = (TextView)findViewById(R.id.task_detail_title);
         titleText.setText(mTask.getName());
         TextView typeText = (TextView)findViewById(R.id.task_detail_type);
-        typeText.setText(mTask.getTypeString());
+        typeText.setText(mTask.formatTypeString());
         TextView dateText = (TextView)findViewById(R.id.task_detail_date);
-        dateText.setText(mTask.getDateString());
+        dateText.setText(mTask.formatDateString());
     }
 }

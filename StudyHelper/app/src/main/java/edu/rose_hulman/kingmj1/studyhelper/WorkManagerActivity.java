@@ -17,7 +17,7 @@ public class WorkManagerActivity extends AppCompatActivity implements TaskAdapte
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.work_task_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        mTaskAdapter = new TaskAdapter(this, recyclerView, this);
+        mTaskAdapter = new TaskAdapter(this, recyclerView, this, null);
         recyclerView.setAdapter(mTaskAdapter);
     }
 

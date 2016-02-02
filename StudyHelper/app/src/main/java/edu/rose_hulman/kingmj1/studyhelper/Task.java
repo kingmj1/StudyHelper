@@ -84,7 +84,7 @@ public class Task implements Parcelable {
 
     public String getName() { return name;}
 
-    public String getTypeString() {
+    public String formatTypeString() {
         if(type == null) {
             return "null type?";
         }
@@ -100,7 +100,7 @@ public class Task implements Parcelable {
         }
     }
 
-    public String getDateString() {
+    public String formatDateString() {
         return DateFormat.getDateInstance().format(dueDate);
     }
 
@@ -173,9 +173,4 @@ public class Task implements Parcelable {
     public void setProgress(int newProgress) {
         progress = newProgress;
     }
-
-    public int getdueYear() {
-        return dueDate.getYear();
-    }
-
 }

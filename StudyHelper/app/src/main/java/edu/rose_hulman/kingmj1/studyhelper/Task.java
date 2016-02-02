@@ -54,7 +54,6 @@ public class Task implements Parcelable {
     @JsonIgnore
     private String key;
 
-
     private String name;
     private String courseKey;
 

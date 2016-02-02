@@ -187,6 +187,14 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.TaskC
                     }
                 });
                 builder.setNegativeButton(android.R.string.cancel, null);
+                if(task != null) {
+                    builder.setNeutralButton(R.string.delete_title, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mTaskAdapter.remove(task);
+                        }
+                    });
+                }
 
 
                 return builder.create();

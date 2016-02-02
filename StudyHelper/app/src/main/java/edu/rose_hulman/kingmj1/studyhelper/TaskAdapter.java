@@ -114,7 +114,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         task.setType(newType);
         task.setTypeInt(newType.ordinal());
         task.setProgress(newProgress);
-        notifyDataSetChanged();
+        mTasksRef.child(task.getKey()).setValue(task);
+    }
+
+    public void remove(Task task) {
+        mTasksRef.child(task.getKey()).removeValue();
     }
 
     public interface TaskCallback {

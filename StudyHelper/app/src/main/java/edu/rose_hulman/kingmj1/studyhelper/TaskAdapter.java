@@ -169,6 +169,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         @Override
         public void onCancelled(FirebaseError firebaseError) {
             Log.e("Task", firebaseError.getMessage());
+            //Log.e("Task", firebaseError.getDetails());
         }
     }
 

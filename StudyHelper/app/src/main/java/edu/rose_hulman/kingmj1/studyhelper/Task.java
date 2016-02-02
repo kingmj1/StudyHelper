@@ -174,4 +174,8 @@ public class Task implements Parcelable {
         progress = newProgress;
     }
 
+    public int getdueYear() {
+        return dueDate.getYear();
+    }
+
 }

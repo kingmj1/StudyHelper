@@ -26,6 +26,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class TaskActivity extends AppCompatActivity implements TaskAdapter.TaskCallback {
@@ -126,7 +127,32 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.TaskC
                     };
                     taskEditText.addTextChangedListener(textWatcher);
 
-//                    switch(task.getType())
+                    switch(task.getTypeString()) {
+                        case("Exam"):
+                            taskTypeExam.setChecked(true);
+                            break;
+                        case("Homework"):
+                            taskTypeHomework.setChecked(true);
+                            break;
+                        case("Meeting"):
+                            taskTypeMeeting.setChecked(true);
+                            break;
+                        default:
+                            taskTypeHomework.setChecked(true);
+                            break;
+                    }
+
+                    Calendar cal=Calendar.getInstance();
+
+                    cal.setTime(task.getDueDate());
+
+                    int year=cal.get(Calendar.YEAR);
+                    int month=cal.get(Calendar.MONTH);
+                    int day=cal.get(Calendar.DAY_OF_MONTH);
+
+                    taskDatePicker.updateDate(year, month, day);
+
+                    taskProgressBar.setProgress(task.getProgress());
                 }
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override

@@ -51,11 +51,13 @@ public class Task implements Parcelable {
     private String name;
     private TaskType type;
     private Date dueDate;
+    private int progress;
 
-    public Task(String newName, Date newDate, TaskType newType) {
+    public Task(String newName, Date newDate, TaskType newType, int newProgress) {
         name = newName;
         dueDate = newDate;
         type = newType;
+        progress = newProgress;
     }
 
     public String getName() { return name;}

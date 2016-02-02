@@ -17,31 +17,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/dialog_add_task_text">
+        android:layout_below="@+id/dialog_add_task_text"
+        android:orientation="horizontal">
 
             <RadioButton
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="@string/Homework"
                 android:id="@+id/radioButton_task_homework"
-                android:layout_gravity="left"
-                android:onClick="taskRadioButtonClicked"/>
+                android:layout_gravity="left" />
 
             <RadioButton
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="@string/Meeting"
                 android:id="@+id/radioButton_task_meeting"
-                android:layout_gravity="left"
-                android:onClick="taskRadioButtonClicked"/>
+                android:layout_gravity="left"/>
 
             <RadioButton
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="@string/Exam"
                 android:id="@+id/radioButton_task_exam"
-                android:layout_gravity="left"
-                android:onClick="taskRadioButtonClicked"/>
+                android:layout_gravity="left"/>
 
     </RadioGroup>
 
@@ -49,9 +47,26 @@
     <DatePicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/datePicker_task"
+        android:id="@+id/dialog_task_datePicker"
         android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/dialog_task_radiogroup"/>
+        android:layout_below="@+id/dialog_task_radiogroup"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:transformPivotX="0dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_task_progressText"
+        android:text="@string/Progress"
+        android:layout_below="@+id/dialog_task_datePicker"
+        android:paddingTop="-50dp"/>
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_task_progressBar"
+        android:layout_below="@+id/dialog_task_progressText"/>
 
 
 </RelativeLayout>

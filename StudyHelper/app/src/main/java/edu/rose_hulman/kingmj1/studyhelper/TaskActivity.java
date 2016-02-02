@@ -22,6 +22,8 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -92,10 +94,15 @@ public class TaskActivity extends AppCompatActivity {
                 View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_add_task, null, false);
                 builder.setView(view);
                 final EditText taskEditText = (EditText) view.findViewById(R.id.dialog_add_task_text);
-                final DatePicker taskDatePicker = (DatePicker) view.findViewById(R.id.datePicker_task);
-                Log.d("StudyhelperError", "at the date Picker switch");
-                taskDatePicker.setCalendarViewShown(false);
-                taskDatePicker.setSpinnersShown(true);
+                final DatePicker taskDatePicker = (DatePicker) view.findViewById(R.id.dialog_task_datePicker);
+                final RadioButton taskTypeExam = (RadioButton) view.findViewById(R.id.radioButton_task_exam);
+                final RadioButton taskTypeHomework = (RadioButton) view.findViewById(R.id.radioButton_task_homework);
+                final RadioButton taskTypeMeeting = (RadioButton) view.findViewById(R.id.radioButton_task_meeting);
+                final TextView taskProgessText = (TextView) view.findViewById(R.id.dialog_task_progressText);
+                final SeekBar taskProgressBar = (SeekBar) view.findViewById(R.id.dialog_task_progressBar);
+
+                //taskProgessText.bringToFront();
+
                 if(task != null) {
                     taskEditText.setText(task.getName());
 
@@ -122,40 +129,29 @@ public class TaskActivity extends AppCompatActivity {
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(task == null) {
+                        if(task != null) {
                             String name = taskEditText.getText().toString();
                             mTaskAdapter.update(task, name);
-                            mTaskAdapter.createTask(name, new Date(), Task.TaskType.HOMEWORK);
+                        } else {
+                            String name = taskEditText.getText().toString();
+                            if(name == null) {
+                                name = "Default";
+                            }
+                            //long longdate = taskDatePicker.getCalendarView().getDate();
+                            int month = taskDatePicker.getMonth();
+                            int day = taskDatePicker.getDayOfMonth();
+                            int year = taskDatePicker.getYear();
+                            Date date = new Date(month, day, year);
+                            Task.TaskType taskType = getTaskType(taskTypeExam.isChecked(), taskTypeHomework.isChecked(), taskTypeMeeting.isChecked());
+                            int progress = taskProgressBar.getProgress();
+                            Log.d("StudyHelperError", "name: " + name + 
+                                " taskType: " + taskType.toString() + " progress: " + Integer.toString(progress));
+                            mTaskAdapter.createTask(name, date, taskType, progress);
                         }
                     }
                 });
                 builder.setNegativeButton(android.R.string.cancel, null);
 
-//                public void taskRadioButtonClicked (View view) {
-//                    boolean checked = ((RadioButton) view).isChecked();
-//                    RadioButton examRadio = (RadioButton) findViewById(R.id.radioButton_task_exam);
-//                    RadioButton homeworkRadio = (RadioButton) findViewById(R.id.radioButton_task_homework);
-//                    RadioButton meetingRadio = (RadioButton) findViewById(R.id.radioButton_task_meeting);
-//
-//                    Log.d("StudyhelperError", "at the task radio button switch statement");
-//                    switch(view.getId()) {
-//                        case R.id.radioButton_task_exam:
-//                            examRadio.setChecked(true);
-//                            homeworkRadio.setChecked(false);
-//                            meetingRadio.setChecked(false);
-//                            break;
-//                        case R.id.radioButton_task_homework:
-//                            examRadio.setChecked(false);
-//                            homeworkRadio.setChecked(true);
-//                            meetingRadio.setChecked(false);
-//                            break;
-//                        case R.id.radioButton_task_meeting:
-//                            examRadio.setChecked(false);
-//                            homeworkRadio.setChecked(false);
-//                            meetingRadio.setChecked(true);
-//                            break;
-//                    }
-//                }
 
                 return builder.create();
             }
@@ -164,6 +160,16 @@ public class TaskActivity extends AppCompatActivity {
 
 
         df.show(getSupportFragmentManager(), "add");
+    }
+
+    public Task.TaskType getTaskType(boolean examChecked, boolean homeworkChecked, boolean meetingChecked) {
+        if(examChecked == true) {
+            return Task.TaskType.EXAM;
+        } else if(meetingChecked == true) {
+            return Task.TaskType.MEETING;
+        } else {
+            return Task.TaskType.HOMEWORK;
+        }
     }
 
 

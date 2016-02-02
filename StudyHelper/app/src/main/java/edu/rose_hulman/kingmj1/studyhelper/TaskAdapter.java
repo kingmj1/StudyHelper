@@ -71,13 +71,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     }
 
     private void createTestTasks() {
-        mTasks.add(new Task("Homework 4", new Date(), Task.TaskType.HOMEWORK));
-        mTasks.add(new Task("Exam 3", new Date(), Task.TaskType.EXAM));
+        mTasks.add(new Task("Homework 4", new Date(), Task.TaskType.HOMEWORK, 10));
+        mTasks.add(new Task("Exam 3", new Date(), Task.TaskType.EXAM, 20));
     }
 
-    public void createTask(String name, Date date, Task.TaskType taskType) {
-        Task newTask = new Task(name, date, taskType);
+    public void createTask(String name, Date date, Task.TaskType taskType, int progress) {
+        Task newTask = new Task(name, date, taskType, progress);
         mTasks.add(newTask);
+        notifyDataSetChanged();
     }
 
     public void update(Task task, String newName) {

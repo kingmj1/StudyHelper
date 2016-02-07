@@ -30,5 +30,6 @@
     <string name="delete_title">Delete</string>
     <string name="classmate_name_hint">Name</string>
     <string name="classmate_email_hint">Email Address</string>
+    <string name="study_mode_title">Study Mode</string>
 
 </resources>

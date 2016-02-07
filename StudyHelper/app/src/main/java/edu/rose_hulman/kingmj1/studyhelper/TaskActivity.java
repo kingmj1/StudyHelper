@@ -78,6 +78,7 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.TaskC
 
         if (id == R.id.action_classmates) {
             Intent classmatesIntent = new Intent(this, ClassmatesActivity.class);
+            classmatesIntent.putExtra(CourseAdapter.COURSE_KEY_EXTRA_KEY, mCourseKey);
             startActivity(classmatesIntent);
             return true;
         }

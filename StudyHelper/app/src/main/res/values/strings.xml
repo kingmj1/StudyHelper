@@ -24,7 +24,11 @@
 
     <string name="dialog_add_course_title">Add A Course</string>
     <string name="dialog_edit_course_title">Edit Course</string>
+    <string name="dialog_add_classmate_title">Add A Classmate</string>
+    <string name="dialog_edit_classmate_title">Edit Classmate</string>
     <string name="course_name_hint">course name</string>
     <string name="delete_title">Delete</string>
+    <string name="classmate_name_hint">Name</string>
+    <string name="classmate_email_hint">Email Address</string>
 
 </resources>

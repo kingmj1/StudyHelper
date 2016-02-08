@@ -49,10 +49,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         mTaskCallback = taskCallback;
         mTasksRef = new Firebase(TASKS_PATH);
         mTasksRef.keepSynced(true);
-        //mTasksRef.addChildEventListener(new TaskChildEventListener());
-
-        Query query = mTasksRef.orderByChild("courseKey").equalTo(mCourseKey);
-        query.addChildEventListener(new TaskChildEventListener());
+        if(courseKey != null) {
+            Query query = mTasksRef.orderByChild("courseKey").equalTo(mCourseKey);
+            query.addChildEventListener(new TaskChildEventListener());
+        } else {
+            mTasksRef.addChildEventListener(new TaskChildEventListener());
+        }
+        
     }
 
     @Override

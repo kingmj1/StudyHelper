@@ -22,5 +22,7 @@ public class TaskDetailActivity extends AppCompatActivity {
         typeText.setText(mTask.formatTypeString());
         TextView dateText = (TextView)findViewById(R.id.task_detail_date);
         dateText.setText(mTask.formatDateString());
+        TextView progressText = (TextView) findViewById(R.id.task_detail_progress);
+        progressText.setText(mTask.getProgress() + "%");
     }
 }

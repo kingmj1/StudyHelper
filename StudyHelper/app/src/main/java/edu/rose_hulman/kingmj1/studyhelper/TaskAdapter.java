@@ -13,6 +13,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,6 +28,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     private static final String TASKS_PATH = FIREBASE_URL + "/tasks";
 
     private ArrayList<Task> mTasks = new ArrayList<>();
+    //private Course mCourse;
     private Context mContext;
     private RecyclerView mRecyclerView;
     private TaskCallback mTaskCallback;
@@ -47,7 +49,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         mTaskCallback = taskCallback;
         mTasksRef = new Firebase(TASKS_PATH);
         mTasksRef.keepSynced(true);
-        mTasksRef.addChildEventListener(new TaskChildEventListener());
+        //mTasksRef.addChildEventListener(new TaskChildEventListener());
+
+        Query query = mTasksRef.orderByChild("courseKey").equalTo(mCourseKey);
+        query.addChildEventListener(new TaskChildEventListener());
     }
 
     @Override

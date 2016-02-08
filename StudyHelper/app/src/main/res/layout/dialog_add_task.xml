@@ -17,6 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="15dp"
         android:layout_below="@+id/dialog_add_task_text"
         android:orientation="horizontal">
 
@@ -44,29 +45,27 @@
     </RadioGroup>
 
 
-    <DatePicker
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/dialog_task_datePicker"
-        android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/dialog_task_radiogroup"
-        android:scaleX="0.8"
-        android:scaleY="0.8"
-        android:transformPivotX="0dp"/>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/dialog_task_progressText"
         android:text="@string/Progress"
-        android:layout_below="@+id/dialog_task_datePicker"
-        android:paddingTop="-50dp"/>
+        android:layout_below="@+id/dialog_task_radiogroup"/>
 
     <android.support.v7.widget.AppCompatSeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/dialog_task_progressBar"
         android:layout_below="@+id/dialog_task_progressText"/>
+
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_task_datePicker"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_below="@+id/dialog_task_progressBar"/>
+
 
 
 </RelativeLayout>

@@ -1,16 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="edu.rose_hulman.kingmj1.studyhelper.WorkManagerActivity">
-
-    <item
-        android:id="@+id/action_study_mode"
-        android:orderInCategory="100"
-        android:title="@string/study_mode_title"
-        app:showAsAction="ifRoom"
-        />
-
+    tools:context="edu.rose_hulman.kingmj1.studyhelper.MainActivity">
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
@@ -22,5 +13,4 @@
         android:orderInCategory="100"
         android:title="@string/action_logout"
         app:showAsAction="never" />
-
 </menu>

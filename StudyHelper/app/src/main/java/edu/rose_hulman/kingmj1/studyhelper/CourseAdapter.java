@@ -23,10 +23,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     public static final String COURSE_KEY_EXTRA_KEY = "course_key";
 
-    private static final String FIREBASE_REPO = "study-helper-rose";
-    private static final String FIREBASE_URL = "https://" + FIREBASE_REPO + ".firebaseio.com";
-    private static final String COURSES_PATH = FIREBASE_URL + "/courses";
-
     private Context mContext;
     private CourseCallback mCallback;
     private ArrayList<Course> mCourses = new ArrayList<>();
@@ -38,7 +34,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         mContext = context;
         mCallback = callback;
         mRecyclerView = recyclerView;
-        mCourseRef = new Firebase(COURSES_PATH);
+        mCourseRef = new Firebase(Constants.COURSES_PATH);
         mCourseRef.keepSynced(true);
         mCourseRef.addChildEventListener(new CourseChildListener());
         //createTestCourses();

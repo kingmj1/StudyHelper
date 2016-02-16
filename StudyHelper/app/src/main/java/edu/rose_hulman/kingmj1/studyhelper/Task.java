@@ -15,9 +15,14 @@ public class Task implements Parcelable {
 
     protected Task(Parcel in) {
         name = in.readString();
-        dueDate = new Date(in.readLong());
+        notes = in.readString();
+        key = in.readString();
+        courseKey = in.readString();
+        dateLong = in.readLong();
+        dueDate = new Date(dateLong);
         type = (TaskType)in.readSerializable();
         progress = in.readInt();
+        uid = in.readString();
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
@@ -40,9 +45,13 @@ public class Task implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
+        dest.writeString(notes);
+        dest.writeString(key);
+        dest.writeString(courseKey);
         dest.writeLong(dueDate.getTime());
         dest.writeSerializable(type);
         dest.writeInt(progress);
+        dest.writeString(uid);
     }
 
     public enum TaskType {
@@ -67,6 +76,9 @@ public class Task implements Parcelable {
 
     private long dateLong;
     private int progress;
+    private String notes;
+    private String uid;
+
 
     public Task() {
         //empty constructor for firebase
@@ -79,6 +91,7 @@ public class Task implements Parcelable {
         type = newType;
         typeInt = type.ordinal();
         progress = newProgress;
+        notes = "";
     }
 
     public String getName() { return name;}
@@ -111,6 +124,7 @@ public class Task implements Parcelable {
         typeInt = task.getTypeInt();
         type = TaskType.values()[typeInt];
         progress = task.getProgress();
+        notes = task.getNotes();
     }
 
     public String getKey() {
@@ -171,5 +185,21 @@ public class Task implements Parcelable {
 
     public void setProgress(int newProgress) {
         progress = newProgress;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String newNotes) {
+        notes = newNotes;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 }

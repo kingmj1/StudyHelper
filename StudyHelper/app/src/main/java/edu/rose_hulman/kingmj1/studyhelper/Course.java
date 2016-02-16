@@ -17,6 +17,8 @@ public class Course implements Parcelable {
     private String key;
 
     private String name;
+
+    private String uid;
     //private TaskAdapter mTaskAdapter;
 
     public Course() {
@@ -60,6 +62,14 @@ public class Course implements Parcelable {
 //    public void setTaskAdapter(TaskAdapter mTaskAdapter) {
 //        this.mTaskAdapter = mTaskAdapter;
 //    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public String getKey() {
         return key;

@@ -42,9 +42,6 @@ public class CourseActivity extends AppCompatActivity
         implements CourseAdapter.CourseCallback {
 
     private CourseAdapter mCourseAdapter;
-    private static final String FIREBASE_REPO = "reynolpt-passwordkeeper";
-    private static final String FIREBASE_URL = "https://" + FIREBASE_REPO + ".firebaseio.com/";
-    private static final String FIREBASE = "FIREBASE";
 
 
     @Override
@@ -95,7 +92,7 @@ public class CourseActivity extends AppCompatActivity
         }
 
         if (id == R.id.action_logout) {
-            Firebase firebase = new Firebase(FIREBASE_URL);
+            Firebase firebase = new Firebase(Constants.FIREBASE_URL);
             firebase.unauth();
             Intent mainIntent = new Intent(this, MainActivity.class);
             startActivity(mainIntent);

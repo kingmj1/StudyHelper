@@ -21,10 +21,6 @@ import java.util.ArrayList;
  */
 public class ClassmatesAdapter extends RecyclerView.Adapter<ClassmatesAdapter.ClassmatesViewHolder> {
 
-    private static final String FIREBASE_REPO = "study-helper-rose";
-    private static final String FIREBASE_URL = "https://" + FIREBASE_REPO + ".firebaseio.com";
-    private static final String CLASSMATES_PATH = FIREBASE_URL + "/classmates";
-
     private Firebase mClassmatesRef;
     private Context mContext;
     private RecyclerView mRecyclerView;
@@ -34,7 +30,7 @@ public class ClassmatesAdapter extends RecyclerView.Adapter<ClassmatesAdapter.Cl
     public ClassmatesAdapter(Context context, RecyclerView recyclerView, ClassmatesCallback callback, String courseKey) {
         mContext = context;
         mRecyclerView = recyclerView;
-        mClassmatesRef = new Firebase(CLASSMATES_PATH);
+        mClassmatesRef = new Firebase(Constants.CLASSMATES_PATH);
         mClassmatesRef.keepSynced(true);
         Query classmatesQuery = mClassmatesRef.orderByChild(Classmate.COURSE_KEY).equalTo(courseKey);
         classmatesQuery.addChildEventListener(new ClassmatesChildEventListener());

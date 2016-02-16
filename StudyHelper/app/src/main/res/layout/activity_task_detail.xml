@@ -52,4 +52,12 @@
         android:text="%"
         />
 
+    <EditText
+        android:layout_below="@id/task_detail_progress"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/task_notes_edit_text"
+        android:hint="@string/notes_hint"
+        />
+
 </RelativeLayout>

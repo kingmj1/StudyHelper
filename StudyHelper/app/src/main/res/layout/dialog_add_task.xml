@@ -64,7 +64,8 @@
         android:id="@+id/dialog_task_datePicker"
         android:layout_gravity="center_horizontal"
         android:layout_marginLeft="20dp"
-        android:layout_below="@+id/dialog_task_progressBar"/>
+        android:layout_below="@+id/dialog_task_progressBar"
+        android:headerBackground="@color/colorPrimary"/>
 
 
 

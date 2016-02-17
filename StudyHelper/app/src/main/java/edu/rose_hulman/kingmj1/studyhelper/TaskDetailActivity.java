@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
@@ -31,8 +33,11 @@ public class TaskDetailActivity extends AppCompatActivity {
         typeText.setText(mTask.formatTypeString());
         TextView dateText = (TextView)findViewById(R.id.task_detail_date);
         dateText.setText(mTask.formatDateString());
-        TextView progressText = (TextView) findViewById(R.id.task_detail_progress);
-        progressText.setText(mTask.getProgress() + "%");
+//        TextView progressText = (TextView) findViewById(R.id.task_detail_progress);
+//        progressText.setText(mTask.getProgress() + "%");
+        SeekBar progressBar = (SeekBar) findViewById(R.id.task_detail_progress_bar);
+        progressBar.setProgress(mTask.getProgress());
+        progressBar.setEnabled(false);
         final EditText notesText = (EditText) findViewById(R.id.task_notes_edit_text);
         notesText.setText(mTask.getNotes());
         notesText.addTextChangedListener(new TextWatcher() {

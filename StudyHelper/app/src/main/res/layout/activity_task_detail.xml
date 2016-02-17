@@ -43,21 +43,37 @@
         android:text="@string/Progress"
         />
 
-    <TextView
-        android:id="@+id/task_detail_progress"
-        android:layout_width="wrap_content"
+    <!--<TextView-->
+        <!--android:id="@+id/task_detail_progress"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_below="@id/task_detail_progress_text"-->
+        <!--android:text="%"-->
+        <!--/>-->
+
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/task_detail_progress_text"
-        android:text="%"
-        />
+        android:id="@+id/task_detail_progress_bar"
+        android:layout_below="@+id/task_detail_progress_text"/>
+
+    <!--<ProgressBar-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/task_detail_progress_bar"-->
+        <!--android:layout_below="@+id/task_detail_progress_text"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:backgroundTint="@color/colorPrimaryDark"/>-->
 
     <EditText
-        android:layout_below="@id/task_detail_progress"
+        android:layout_below="@id/task_detail_progress_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/task_notes_edit_text"
         android:hint="@string/notes_hint"
         />
+
 
 </RelativeLayout>

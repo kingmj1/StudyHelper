@@ -46,6 +46,7 @@
     <string name="no_passwords">You have no passwords</string>
     <string name="action_add">Add</string>
     <string name="action_logout">Logout</string>
+    <string name="action_add_by_key">Add With Key</string>
     <string name="deleted">Deleted</string>
     <string name="undo">UNDO</string>
     <string name="username">Username</string>
@@ -59,6 +60,15 @@
     <string name="login_with_rosefire">Login with Rosefire</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="notes_hint">Write notes here</string>
+    <string name="share_dialog_title">Share Task With Classmates</string>
+    <string name="share_button_text">Share</string>
+    <string name="share_subject_line">Sharing a StudyHelper Task</string>
+    <string name="share_message_format">A classmate would like to share the task \n\n %1$s \n\nwith you.
+        Copy the following course key into the "Add task with key" option in the Task View. \n\n
+        Key:  %2$s
+    </string>
+    <string name="add_by_key_title">Add Task With Key</string>
+    <string name="add_by_key_hint">Key</string>
 
 
 </resources>

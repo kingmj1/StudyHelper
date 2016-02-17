@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,10 +25,6 @@ import java.util.Date;
  */
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
-    private static final String FIREBASE_REPO = "study-helper-rose";
-    private static final String FIREBASE_URL = "https://" + FIREBASE_REPO + ".firebaseio.com";
-    private static final String TASKS_PATH = FIREBASE_URL + "/tasks";
-
     private ArrayList<Task> mTasks = new ArrayList<>();
     //private Course mCourse;
     private Context mContext;
@@ -35,6 +33,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     private String mCourseKey;
     private Firebase mTasksRef;
     private String mUID;
+    private ArrayList<Task> mTempTasksHolder = new ArrayList<>();
+    private AddTaskByKeyChildEventListener addByKeyListener;
 
     public static final String TASK_EXTRA_KEY = "TASK";
 
@@ -49,7 +49,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         mUID = uid;
         //createTestTasks();
         mTaskCallback = taskCallback;
-        mTasksRef = new Firebase(TASKS_PATH);
+        mTasksRef = new Firebase(Constants.TASKS_PATH);
         mTasksRef.keepSynced(true);
         Query query;
         if(courseKey != null) {
@@ -116,6 +116,65 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 //        mTasks.add(0, newTask);
 //        notifyDataSetChanged();
         mTasksRef.push().setValue(newTask);
+    }
+
+    public void prepForAddByKey() {
+        addByKeyListener = new AddTaskByKeyChildEventListener();
+        mTasksRef.addChildEventListener(addByKeyListener);
+    }
+
+    public void addByKey(String key) {
+        boolean didCreateTask = false;
+        for(Task t : mTempTasksHolder) {
+            if(t.getKey().equals(key)) {
+                Task newTask = new Task();
+                newTask.setValues(t);
+                newTask.setCourseKey(mCourseKey);
+                newTask.setUid(mUID);
+                add(newTask);
+                didCreateTask = true;
+                break;
+            }
+        }
+        if(!didCreateTask) {
+            Toast invalidKeyToast = Toast.makeText(mContext, "Invalid Key", Toast.LENGTH_SHORT);
+            invalidKeyToast.show();
+        }
+        mTasksRef.removeEventListener(addByKeyListener);
+        mTempTasksHolder.clear();
+    }
+
+    class AddTaskByKeyChildEventListener implements ChildEventListener {
+
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Task task = dataSnapshot.getValue(Task.class);
+            Log.d("Add with key", task.getName());
+            task.setKey(dataSnapshot.getKey());
+            task.setDueDate(new Date(task.getDateLong()));
+            task.setType(Task.TaskType.values()[task.getTypeInt()]);
+            mTempTasksHolder.add(task);
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            //not needed
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+            //not needed
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            //not needed
+        }
+
+        @Override
+        public void onCancelled(FirebaseError firebaseError) {
+            //not needed
+        }
     }
 
     public void update(Task task, String newName, Date newDate, Task.TaskType newType, int newProgress) {

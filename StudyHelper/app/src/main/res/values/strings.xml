@@ -59,6 +59,10 @@
     <string name="login_with_rosefire">Login with Rosefire</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="notes_hint">Write notes here</string>
+    <string name="action_set_notification">Notification</string>
+    <string name="set_notification_button">Set Notification</string>
+    <string name="dialog_set_noti_title">Set a Notification</string>
+    <string name="dialog_set_noti_hours_before">Set the number of days before the task to receive a notification</string>
 
 
 </resources>

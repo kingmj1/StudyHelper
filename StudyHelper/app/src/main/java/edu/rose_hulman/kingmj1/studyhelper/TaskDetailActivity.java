@@ -128,14 +128,14 @@ public class TaskDetailActivity extends AppCompatActivity {
                 mNumberPicker = (NumberPicker) view.findViewById(R.id.dialog_set_noti_numberPicker);
 
                 mNumberPicker.setMinValue(0);
-                mNumberPicker.setMaxValue(100);
+                mNumberPicker.setMaxValue(7);
                 Task.TaskType taskType = mTask.getType();
                 if (taskType == Task.TaskType.HOMEWORK) {
-                    mNumberPicker.setValue(24);
+                    mNumberPicker.setValue(1);
                 } else if (taskType == Task.TaskType.EXAM) {
-                    mNumberPicker.setValue(72);
+                    mNumberPicker.setValue(2);
                 } else {
-                    mNumberPicker.setValue(3);
+                    mNumberPicker.setValue(0);
                 }
 
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {

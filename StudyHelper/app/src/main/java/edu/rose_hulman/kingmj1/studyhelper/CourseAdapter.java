@@ -13,6 +13,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 
 import java.util.ArrayList;
 
@@ -21,22 +22,26 @@ import java.util.ArrayList;
  */
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
 
-    public static final String COURSE_KEY_EXTRA_KEY = "course_key";
+    //public static final String COURSE_KEY_EXTRA_KEY = "course_key";
 
     private Context mContext;
     private CourseCallback mCallback;
     private ArrayList<Course> mCourses = new ArrayList<>();
+    private String mUID;
     private RecyclerView mRecyclerView;
 
     private Firebase mCourseRef;
 
-    public CourseAdapter(Context context, CourseCallback callback, RecyclerView recyclerView) {
+    public CourseAdapter(Context context, CourseCallback callback, RecyclerView recyclerView, String uid) {
         mContext = context;
         mCallback = callback;
         mRecyclerView = recyclerView;
         mCourseRef = new Firebase(Constants.COURSES_PATH);
         mCourseRef.keepSynced(true);
-        mCourseRef.addChildEventListener(new CourseChildListener());
+        mUID = uid;
+        Query courseQuery = mCourseRef.orderByChild("uid").equalTo(mUID);
+        courseQuery.addChildEventListener(new CourseChildListener());
+
         //createTestCourses();
     }
 
@@ -57,7 +62,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             @Override
             public void onClick(View v) {
                 Intent tasksIntent = new Intent(mContext, TaskActivity.class);
-                tasksIntent.putExtra(COURSE_KEY_EXTRA_KEY, course.getKey());
+                tasksIntent.putExtra(Constants.COURSE_KEY_EXTRA_KEY, course.getKey());
+                tasksIntent.putExtra(Constants.UID_EXTRA_KEY, mUID);
                 mContext.startActivity(tasksIntent);
             }
         });
@@ -87,10 +93,10 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         }
     }
 
-    private void createTestCourses() {
-        mCourses.add(new Course("MA223- Engineering Statistics"));
-        mCourses.add(new Course("ES205- ADES"));
-    }
+//    private void createTestCourses() {
+//        mCourses.add(new Course("MA223- Engineering Statistics"));
+//        mCourses.add(new Course("ES205- ADES"));
+//    }
 
     public void add(Course newCourse) {
         mCourseRef.push().setValue(newCourse);

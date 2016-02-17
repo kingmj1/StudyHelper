@@ -34,6 +34,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     private TaskCallback mTaskCallback;
     private String mCourseKey;
     private Firebase mTasksRef;
+    private String mUID;
 
     public static final String TASK_EXTRA_KEY = "TASK";
 
@@ -41,21 +42,23 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         //blank constructor
     }
 
-    public TaskAdapter(Context context, RecyclerView recyclerView, TaskCallback taskCallback, String courseKey) {
+    public TaskAdapter(Context context, RecyclerView recyclerView, TaskCallback taskCallback, String courseKey, String uid) {
         mContext = context;
         mRecyclerView = recyclerView;
         mCourseKey = courseKey;
+        mUID = uid;
         //createTestTasks();
         mTaskCallback = taskCallback;
         mTasksRef = new Firebase(TASKS_PATH);
         mTasksRef.keepSynced(true);
+        Query query;
         if(courseKey != null) {
-            Query query = mTasksRef.orderByChild("courseKey").equalTo(mCourseKey);
-            query.addChildEventListener(new TaskChildEventListener());
+            query = mTasksRef.orderByChild("courseKey").equalTo(mCourseKey);
         } else {
-            mTasksRef.addChildEventListener(new TaskChildEventListener());
+            query = mTasksRef.orderByChild("uid").equalTo(mUID);
         }
-        
+        query.addChildEventListener(new TaskChildEventListener());
+
     }
 
     @Override
@@ -104,10 +107,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         }
     }
 
-    private void createTestTasks() {
-        mTasks.add(new Task("Homework 4", new Date(), Task.TaskType.HOMEWORK, 10));
-        mTasks.add(new Task("Exam 3", new Date(), Task.TaskType.EXAM, 20));
-    }
+//    private void createTestTasks() {
+//        mTasks.add(new Task("Homework 4", new Date(), Task.TaskType.HOMEWORK, 10));
+//        mTasks.add(new Task("Exam 3", new Date(), Task.TaskType.EXAM, 20));
+//    }
 
     public void add(Task newTask) {
 //        mTasks.add(0, newTask);

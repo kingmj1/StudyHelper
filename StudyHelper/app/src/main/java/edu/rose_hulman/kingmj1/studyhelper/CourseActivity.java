@@ -42,7 +42,7 @@ public class CourseActivity extends AppCompatActivity
         implements CourseAdapter.CourseCallback {
 
     private CourseAdapter mCourseAdapter;
-
+    private String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +50,9 @@ public class CourseActivity extends AppCompatActivity
         setContentView(R.layout.activity_course);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Intent intent = getIntent();
+        uid = intent.getStringExtra(Constants.UID_EXTRA_KEY);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +65,7 @@ public class CourseActivity extends AppCompatActivity
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.course_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        mCourseAdapter = new CourseAdapter(this, this, recyclerView);
+        mCourseAdapter = new CourseAdapter(this, this, recyclerView, uid);
         recyclerView.setAdapter(mCourseAdapter);
 
     }
@@ -88,6 +91,7 @@ public class CourseActivity extends AppCompatActivity
 
         if (id == R.id.action_work) {
             Intent workModeIntent = new Intent(this, WorkManagerActivity.class);
+            workModeIntent.putExtra(Constants.UID_EXTRA_KEY, uid);
             startActivity(workModeIntent);
         }
 
@@ -141,7 +145,7 @@ public class CourseActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
                         if (course == null) {
                             String name = nameEditText.getText().toString();
-                            mCourseAdapter.add(new Course(name));
+                            mCourseAdapter.add(new Course(name, uid));
                         }
                     }
                 });

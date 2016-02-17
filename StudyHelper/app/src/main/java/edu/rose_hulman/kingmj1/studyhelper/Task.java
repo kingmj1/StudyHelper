@@ -84,7 +84,7 @@ public class Task implements Parcelable {
         //empty constructor for firebase
     }
 
-    public Task(String newName, Date newDate, TaskType newType, int newProgress) {
+    public Task(String newName, Date newDate, TaskType newType, int newProgress, String newUID) {
         name = newName;
         dueDate = newDate;
         dateLong = dueDate.getTime();
@@ -92,6 +92,7 @@ public class Task implements Parcelable {
         typeInt = type.ordinal();
         progress = newProgress;
         notes = "";
+        uid = newUID;
     }
 
     public String getName() { return name;}

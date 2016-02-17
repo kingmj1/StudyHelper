@@ -25,8 +25,9 @@ public class Course implements Parcelable {
         //required empty constructor for Firebase
     }
 
-    public Course(String newName) {
+    public Course(String newName, String newUID) {
         name = newName;
+        uid = newUID;
         //mTaskAdapter = new TaskAdapter();
     }
 

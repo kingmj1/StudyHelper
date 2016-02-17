@@ -29,9 +29,6 @@ public class MainActivity extends AppCompatActivity
 
     private static final int REQUEST_CODE_GOOGLE_SIGN_IN = 1;
     private static final String TAG = "FPK";
-    private static final String FIREBASE_REPO = "reynolpt-passwordkeeper";
-    private static final String FIREBASE_URL = "https://" + FIREBASE_REPO + ".firebaseio.com/";
-    private static final String FIREBASE = "FIREBASE";
     GoogleApiClient mGoogleApiClient;
 
     @Override
@@ -53,7 +50,7 @@ public class MainActivity extends AppCompatActivity
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        Firebase firebase = new Firebase(FIREBASE_URL);
+        Firebase firebase = new Firebase(Constants.FIREBASE_URL);
         if(firebase.getAuth() == null || isExpired(firebase.getAuth())) {
             switchToLoginFragment();
         } else {
@@ -66,7 +63,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showCourseActivity() {
+        Firebase firebase = new Firebase(Constants.FIREBASE_URL);
+        String uid = firebase.getAuth().getUid();
         Intent courseIntent = new Intent(this, CourseActivity.class);
+        courseIntent.putExtra(Constants.UID_EXTRA_KEY, uid);
         startActivity(courseIntent);
     }
 
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onLogin(String email, String password) {
-        Firebase firebase = new Firebase(FIREBASE_URL);
+        Firebase firebase = new Firebase(Constants.FIREBASE_URL);
         firebase.authWithPassword(email, password, new MyAuthResultHandler());
     }
 
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity
 
     private void onGoogleLoginWithToken(String oAuthToken) {
         //TODO: Log user in with Google OAuth Token
-        Firebase firebase = new Firebase(FIREBASE_URL);
+        Firebase firebase = new Firebase(Constants.FIREBASE_URL);
         firebase.authWithOAuthToken("google", oAuthToken, new MyAuthResultHandler());
     }
 

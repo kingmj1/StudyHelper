@@ -1,6 +1,7 @@
 package edu.rose_hulman.kingmj1.studyhelper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,7 @@ public class WorkManagerActivity extends AppCompatActivity implements TaskAdapte
     private AudioManager mAudioManager;
     private Window mWindow;
     private int previousScreenBrightness;
+    private String mUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,9 @@ public class WorkManagerActivity extends AppCompatActivity implements TaskAdapte
         setContentView(R.layout.activity_work_manager);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
+
+        Intent intent = getIntent();
+        mUID = intent.getStringExtra(Constants.UID_EXTRA_KEY);
         mWindow = getWindow();
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         isInWorkMode = !(mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL);
@@ -42,7 +47,7 @@ public class WorkManagerActivity extends AppCompatActivity implements TaskAdapte
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.work_task_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        mTaskAdapter = new TaskAdapter(this, recyclerView, this, null);
+        mTaskAdapter = new TaskAdapter(this, recyclerView, this, null, mUID);
         recyclerView.setAdapter(mTaskAdapter);
     }
 

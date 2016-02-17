@@ -43,7 +43,7 @@ public class ClassmatesActivity extends AppCompatActivity implements ClassmatesA
             }
         });
         Intent intent = getIntent();
-        mCourseKey = intent.getStringExtra(CourseAdapter.COURSE_KEY_EXTRA_KEY);
+        mCourseKey = intent.getStringExtra(Constants.COURSE_KEY_EXTRA_KEY);
 
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.classmates_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

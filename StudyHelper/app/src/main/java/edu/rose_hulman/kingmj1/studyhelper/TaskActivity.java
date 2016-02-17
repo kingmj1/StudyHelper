@@ -29,6 +29,7 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.TaskC
 
     private TaskAdapter mTaskAdapter;
     private String mCourseKey;
+    private String mUID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +39,8 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.TaskC
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        mCourseKey = intent.getStringExtra(CourseAdapter.COURSE_KEY_EXTRA_KEY);
+        mCourseKey = intent.getStringExtra(Constants.COURSE_KEY_EXTRA_KEY);
+        mUID = intent.getStringExtra(Constants.UID_EXTRA_KEY);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +55,7 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.TaskC
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.task_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
-        mTaskAdapter = new TaskAdapter(this, recyclerView, this, mCourseKey);
+        mTaskAdapter = new TaskAdapter(this, recyclerView, this, mCourseKey, mUID);
         recyclerView.setAdapter(mTaskAdapter);
     }
 
@@ -78,7 +80,7 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.TaskC
 
         if (id == R.id.action_classmates) {
             Intent classmatesIntent = new Intent(this, ClassmatesActivity.class);
-            classmatesIntent.putExtra(CourseAdapter.COURSE_KEY_EXTRA_KEY, mCourseKey);
+            classmatesIntent.putExtra(Constants.COURSE_KEY_EXTRA_KEY, mCourseKey);
             startActivity(classmatesIntent);
             return true;
         }
@@ -181,7 +183,7 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.TaskC
                             Date date = new Date(year - 1900, month, day);
                             Task.TaskType taskType = getTaskType(taskTypeExam.isChecked(), taskTypeHomework.isChecked(), taskTypeMeeting.isChecked());
                             int progress = taskProgressBar.getProgress();
-                            Task newTask = new Task(name, date, taskType, progress);
+                            Task newTask = new Task(name, date, taskType, progress, mUID);
                             newTask.setCourseKey(mCourseKey);
                             mTaskAdapter.add(newTask);
                         }

@@ -57,7 +57,8 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         holder.courseNameView.setText(course.getName());
         //int courseCount = course.getTaskAdapter().getItemCount();
         int courseCount = 0;
-        holder.courseCountView.setText(mContext.getResources().getQuantityString(R.plurals.task_count_text, courseCount, courseCount));
+        //holder.courseCountView.setText(mContext.getResources().getQuantityString(R.plurals.task_count_text, courseCount, courseCount));
+        holder.courseCountView.setText("");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,5 +1,6 @@
 package edu.rose_hulman.kingmj1.studyhelper;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -96,10 +97,8 @@ public class CourseActivity extends AppCompatActivity
         }
 
         if (id == R.id.action_logout) {
-            Firebase firebase = new Firebase(Constants.FIREBASE_URL);
-            firebase.unauth();
-            Intent mainIntent = new Intent(this, MainActivity.class);
-            startActivity(mainIntent);
+            setResult(Activity.RESULT_OK);
+            finish();
             return true;
         }
 

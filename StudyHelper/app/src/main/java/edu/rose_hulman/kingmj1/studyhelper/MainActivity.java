@@ -1,5 +1,6 @@
 package edu.rose_hulman.kingmj1.studyhelper;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -30,11 +31,13 @@ public class MainActivity extends AppCompatActivity
     private static final int REQUEST_CODE_GOOGLE_SIGN_IN = 1;
     private static final String TAG = "FPK";
     GoogleApiClient mGoogleApiClient;
+    private boolean returningFromLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        returningFromLogout = false;
         if (savedInstanceState == null) {
             Firebase.setAndroidContext(this);
         }
@@ -67,7 +70,7 @@ public class MainActivity extends AppCompatActivity
         String uid = firebase.getAuth().getUid();
         Intent courseIntent = new Intent(this, CourseActivity.class);
         courseIntent.putExtra(Constants.UID_EXTRA_KEY, uid);
-        startActivity(courseIntent);
+        startActivityForResult(courseIntent, Constants.RC_DID_LOGOUT);
     }
 
     private void switchToLoginFragment() {
@@ -82,12 +85,11 @@ public class MainActivity extends AppCompatActivity
         return (System.currentTimeMillis() / 1000) >= authData.getExpires();
     }
 
-//    @Override
-//    public void onLogout() {
-//        Firebase firebase = new Firebase(FIREBASE_URL);
-//        firebase.unauth();
-//        switchToLoginFragment();
-//    }
+    public void onLogout() {
+        Firebase firebase = new Firebase(Constants.FIREBASE_URL);
+        firebase.unauth();
+        switchToLoginFragment();
+    }
 
 
     class MyAuthResultHandler implements Firebase.AuthResultHandler {
@@ -128,6 +130,13 @@ public class MainActivity extends AppCompatActivity
                 getGoogleOAuthToken(emailAddress);
             }
 
+        } else if (requestCode == Constants.RC_DID_LOGOUT) {
+            if(resultCode == Activity.RESULT_OK) {
+                returningFromLogout = true;
+            } else {
+                Log.d("SH", "Came back using back key, naughty");
+                showCourseActivity();
+            }
         }
 
 
@@ -192,5 +201,13 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if(returningFromLogout) {
+            onLogout();
+        }
+        returningFromLogout = false;
+    }
 
 }

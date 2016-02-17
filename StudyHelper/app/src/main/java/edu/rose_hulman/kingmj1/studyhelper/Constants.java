@@ -15,4 +15,6 @@ public class Constants {
     public static final String UID_EXTRA_KEY = "uid_key";
     public static final String COURSE_KEY_EXTRA_KEY = "course_key";
 
+    //Request Code
+    public static final int RC_DID_LOGOUT = 123;
 }

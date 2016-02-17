@@ -109,14 +109,12 @@ public class TaskDetailActivity extends AppCompatActivity {
         }
 
         if (id == R.id.action_set_notification) {
-
             showSetNotificationDialog();
-
         }
-
 
         return super.onOptionsItemSelected(item);
     }
+
     private void showSetNotificationDialog() {
         DialogFragment df = new DialogFragment() {
 
@@ -160,13 +158,14 @@ public class TaskDetailActivity extends AppCompatActivity {
         Notification.Builder builder = new Notification.Builder(this);
 
         builder.setContentTitle("StudyHelper reminder!");
+        builder.setSmallIcon(R.mipmap.ic_launcher);
 
         if(mNumberPicker.getValue() > 1) {
-            builder.setContentText("This is your reminder that " + mTask.getName() + " is in " + mNumberPicker.getValue() + " days.");
+            builder.setContentText(mTask.getName() + " is in " + mNumberPicker.getValue() + " days.");
         } else if(mNumberPicker.getValue() == 1) {
-            builder.setContentText("This is your reminder that " + mTask.getName() + " is in " + mNumberPicker.getValue() + " day.");
+            builder.setContentText(mTask.getName() + " is in " + mNumberPicker.getValue() + " day.");
         } else {
-            builder.setContentText("This is your reminder that " + mTask.getName() + " is today.");
+            builder.setContentText(mTask.getName() + " is today.");
         }
 
         int UNUSED = 124234;
@@ -180,20 +179,16 @@ public class TaskDetailActivity extends AppCompatActivity {
     private void setNotification() {
         int daysBefore = mNumberPicker.getValue();
 
-        Intent loginIntent = new Intent(this, LoginActivity.class);
-        Notification notification = getNotification(loginIntent);
+        Intent mainActivity = new Intent(this, MainActivity.class);
+        Notification notification = getNotification(mainActivity);
 
         Intent notificationIntent = new Intent(this, NotificationBroadcastReceiver.class);
         notificationIntent.putExtra(KEY_NOTIFICATION, notification);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 17378269, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Log.d("Studyhelper", "setting the notification now");
-
-        long notificationDay = SystemClock.elapsedRealtime() + 10000;
-
-//        long millisecondsBefore = daysBefore * 86400000;
-//        long notificationDay = (mTask.getDateLong() - millisecondsBefore) + (8 * 3600000);
+        long millisecondsBefore = daysBefore * 86400000;
+        long notificationDay = (mTask.getDateLong() - millisecondsBefore) + (8 * 3600000);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, notificationDay, pendingIntent);

@@ -186,11 +186,6 @@ public class MainActivity extends AppCompatActivity
         firebase.authWithOAuthToken("google", oAuthToken, new MyAuthResultHandler());
     }
 
-    @Override
-    public void onRosefireLogin(String email, String password) {
-
-    }
-
     private void showLoginError(String message) {
         LoginActivity loginActivity = (LoginActivity) getSupportFragmentManager().findFragmentByTag("Login");
         loginActivity.onLoginError(message);

@@ -49,7 +49,6 @@ public class LoginActivity extends Fragment {
         mProgressSpinner = rootView.findViewById(R.id.login_progress);
         View loginButton = rootView.findViewById(R.id.email_sign_in_button);
         mGoogleSignInButton = (SignInButton) rootView.findViewById(R.id.google_sign_in_button);
-        //View rosefireLoginButton = rootView.findViewById(R.id.rosefire_sign_in_button);
         mEmailView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -84,57 +83,8 @@ public class LoginActivity extends Fragment {
                 loginWithGoogle();
             }
         });
-//        rosefireLoginButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                loginWithRosefire();
-//            }
-//        });
         return rootView;
     }
-
-    private void loginWithRosefire() {
-        if (mLoggingIn) {
-            return;
-        }
-
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
-
-        String email = mEmailView.getText().toString();
-
-        String password = mPasswordView.getText().toString();
-
-        boolean cancelLogin = false;
-        View focusView = null;
-
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.invalid_password));
-            focusView = mPasswordView;
-            cancelLogin = true;
-        }
-
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.field_required));
-            focusView = mEmailView;
-            cancelLogin = true;
-        } else if (!email.endsWith("@rose-hulman.edu")) {
-            email += "@rose-hulman.edu";
-        }
-
-        if (cancelLogin) {
-            // error in login
-            focusView.requestFocus();
-        } else {
-            // show progress spinner, and start background task to login
-            showProgress(true);
-            mLoggingIn = true;
-            mListener.onRosefireLogin(email, password);
-            hideKeyboard();
-        }
-
-    }
-
 
     private void loginWithGoogle() {
         if (mLoggingIn) {
@@ -246,6 +196,5 @@ public class LoginActivity extends Fragment {
 
         void onGoogleLogin();
 
-        void onRosefireLogin(String email, String password);
     }
 }

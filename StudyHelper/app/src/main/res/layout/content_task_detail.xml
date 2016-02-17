@@ -53,7 +53,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/task_detail_progress_bar"
-        android:layout_below="@+id/task_detail_progress_text"/>
+        android:layout_below="@+id/task_detail_progress_text"
+        android:background="@color/colorPrimary"/>
 
     <Button
         android:layout_width="match_parent"

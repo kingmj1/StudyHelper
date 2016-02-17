@@ -27,6 +27,7 @@
 
     <ProgressBar
         android:id="@+id/login_progress"
+        android:layout_below="@id/fragment_login_title"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
@@ -36,6 +37,7 @@
 
     <LinearLayout
         android:id="@+id/login_form"
+        android:layout_below="@id/login_progress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -91,17 +93,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="16dp" />
-
-        <Button
-            android:id="@+id/rosefire_sign_in_button"
-            style="?android:textAppearanceSmall"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@color/colorPrimaryDark"
-            android:text="@string/login_with_rosefire"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
 
     </LinearLayout>
 </RelativeLayout>

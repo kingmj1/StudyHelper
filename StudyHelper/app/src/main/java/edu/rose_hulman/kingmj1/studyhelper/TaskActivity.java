@@ -85,6 +85,12 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.TaskC
             return true;
         }
 
+        if (id == R.id.action_add_by_key) {
+            mTaskAdapter.prepForAddByKey();
+            showAddByKeyDialog();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -222,6 +228,31 @@ public class TaskActivity extends AppCompatActivity implements TaskAdapter.TaskC
     @Override
     public void onEdit(final Task task) {
         showAddEditTaskDialog(task);
+    }
+
+    private void showAddByKeyDialog() {
+        DialogFragment df = new DialogFragment() {
+            @Override
+            public Dialog onCreateDialog(Bundle savedInstanceState) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(TaskActivity.this);
+                builder.setTitle(getString(R.string.add_by_key_title));
+                final EditText keyEntry = new EditText(TaskActivity.this);
+                keyEntry.setHint(getString(R.string.add_by_key_hint));
+                builder.setView(keyEntry);
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String key = keyEntry.getText().toString();
+                        mTaskAdapter.addByKey(key);
+                    }
+                });
+
+                builder.setNegativeButton(android.R.string.cancel, null);
+
+                return builder.create();
+            }
+        };
+        df.show(getSupportFragmentManager(), "Add by key");
     }
 
 }

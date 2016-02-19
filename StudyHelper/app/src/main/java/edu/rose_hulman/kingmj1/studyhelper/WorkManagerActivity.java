@@ -1,12 +1,18 @@
 package edu.rose_hulman.kingmj1.studyhelper;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Dialog;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -30,6 +37,7 @@ import java.util.Arrays;
 
 public class WorkManagerActivity extends AppCompatActivity implements TaskAdapter.TaskCallback {
 
+    private static final int RC_PERMISSIONS = 123;
     private static final int DEFAULT_SCREEN_BRIGHTNESS = 200;
 
     private TaskAdapter mTaskAdapter;
@@ -39,32 +47,34 @@ public class WorkManagerActivity extends AppCompatActivity implements TaskAdapte
     private int previousScreenBrightness;
     private String mUID;
     private ArrayList<Classmate> mShareClassmates = new ArrayList<>();
+    private boolean canWrite;
+    private boolean hasPreppedForStudyMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        hasPreppedForStudyMode = false;
         setContentView(R.layout.activity_work_manager);
         //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
-
+        if(Build.VERSION.SDK_INT >= 23) {
+            canWrite = Settings.System.canWrite(this);
+        } else {
+            canWrite = true;
+        }
         Intent intent = getIntent();
         mUID = intent.getStringExtra(Constants.UID_EXTRA_KEY);
         mWindow = getWindow();
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         isInWorkMode = !(mAudioManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL);
-        try {
-            previousScreenBrightness = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
-        } catch (Settings.SettingNotFoundException e) {
-            e.printStackTrace();
-            previousScreenBrightness = DEFAULT_SCREEN_BRIGHTNESS;
-        }
-        Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
 
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.work_task_recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
         mTaskAdapter = new TaskAdapter(this, recyclerView, this, null, mUID);
         recyclerView.setAdapter(mTaskAdapter);
+
+        prepForStudyMode();
     }
 
     @Override
@@ -89,28 +99,36 @@ public class WorkManagerActivity extends AppCompatActivity implements TaskAdapte
         if (id == R.id.action_study_mode) {
 //            Toast placeholder = Toast.makeText(this, "Upcoming Feature", Toast.LENGTH_SHORT);
 //            placeholder.show();
-            float windowBrightness;
-            int settingsBrightness;
-            if(isInWorkMode) {
-                //brightness of <0 makes it default to user preferences
-                windowBrightness = -1.0f;
-                settingsBrightness = previousScreenBrightness;
-                mAudioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+            if(hasPreppedForStudyMode) {
+                float windowBrightness;
+                int settingsBrightness;
+                if (isInWorkMode) {
+                    //brightness of <0 makes it default to user preferences
+                    windowBrightness = -1.0f;
+                    settingsBrightness = previousScreenBrightness;
+                    mAudioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                } else {
+                    windowBrightness = 0.05f;
+                    settingsBrightness = 15;
+                    mAudioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                }
+
+
+                WindowManager.LayoutParams layoutpars = mWindow.getAttributes();
+                layoutpars.screenBrightness = windowBrightness;
+                mWindow.setAttributes(layoutpars);
+
+                Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS,
+                        settingsBrightness);
+
+                isInWorkMode = !isInWorkMode;
             } else {
-                windowBrightness = 0.05f;
-                settingsBrightness = 15;
-                mAudioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+                prepForStudyMode();
             }
-            WindowManager.LayoutParams layoutpars = mWindow.getAttributes();
-            //Set the brightness of this window
-            layoutpars.screenBrightness = windowBrightness;
-            //Apply attribute changes to this window
-            mWindow.setAttributes(layoutpars);
 
-            Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, settingsBrightness);
-
-            isInWorkMode = !isInWorkMode;
             return true;
+        } else {
+            prepForStudyMode();
         }
 
         return super.onOptionsItemSelected(item);
@@ -214,6 +232,42 @@ public class WorkManagerActivity extends AppCompatActivity implements TaskAdapte
         @Override
         public void onCancelled(FirebaseError firebaseError) {
             Log.e("SH", firebaseError.getMessage());
+        }
+    }
+
+    @TargetApi(23)
+    private void getWritePermission() {
+        Intent writePermissionIntent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+        startActivityForResult(writePermissionIntent, RC_PERMISSIONS);
+    }
+
+    private void prepForStudyMode() {
+        if(hasPreppedForStudyMode) {
+            return;
+        }
+        if(canWrite) {
+            try {
+                previousScreenBrightness = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+            }
+            Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE,
+                    Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+            hasPreppedForStudyMode = true;
+        } else {
+            getWritePermission();
+        }
+    }
+    @TargetApi(23)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == RC_PERMISSIONS) {
+            if(Settings.System.canWrite(this)) {
+                canWrite = true;
+                prepForStudyMode();
+            }
+        } else {
+            Toast.makeText(this, getString(R.string.permission_denied_message), Toast.LENGTH_SHORT).show();
         }
     }
 }

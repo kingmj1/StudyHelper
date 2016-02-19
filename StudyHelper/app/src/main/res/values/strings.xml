@@ -73,5 +73,6 @@
     </string>
     <string name="add_by_key_title">Add Task With Key</string>
     <string name="add_by_key_hint">Key</string>
+    <string name="permission_denied_message">Settings permission not granted- Study Mode will not work</string>
 
 </resources>
